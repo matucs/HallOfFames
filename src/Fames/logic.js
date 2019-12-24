@@ -1,5 +1,5 @@
 
-import { getFromApi, getFromLocalStorage, removeFromLocalStorage } from '../_Share/logic'
+import { getFromApi, getFromLocalStorage, removeFromLocalStorage, setToLocalStorage } from '../_Share/logic'
 
 const options = {
     headers: { 'Authorization': getFromLocalStorage('Authorization') }
@@ -12,18 +12,29 @@ const getListWithAuthorization = (url) => getFromApi(url, options).then((res) =>
 const logOut = () => {
     removeFromLocalStorage('Authorization');
 }
-const getAsGuest = (url) => getFromApi(url).then((res) => {
-    return res.data.data.list;
-}).then(
-    (result) => {
-        const tempList = [];
-        result.forEach(element => {
-            tempList.push(element);
-        });
-        return tempList;
-    }
-)
+const getAsGuest = (url) => {
+    return getFromApi(url).then((res) => {
+        return res.data.data.list;
+    }).then(
+        (result) => {
+            const tempList = [];
+            result.forEach(element => {
+                tempList.push(element);
+            });
+            cashLoadedList('fames-list', tempList)
+            return tempList;
+        }
+    ).catch((e) => {
+        //if there is no Internet conection try return list from cash
+        return getFromLocalStorage('fames-list')
+
+    })
+}
+// store in cash
+const cashLoadedList = (key, value) => {
+    setToLocalStorage(key, value)
+}
 
 
 
-export { getListWithAuthorization, getAsGuest,logOut };
+export { getListWithAuthorization, getAsGuest, logOut, cashLoadedList };

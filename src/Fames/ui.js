@@ -1,7 +1,9 @@
 import React, { PureComponent, Fragment } from 'react'
 import { logOut, getAsGuest } from './logic'
 import { NavLink } from 'react-router-dom'
+import { baseUrl } from '../_Share/common'
 import './style.css'
+
 
 class FameUi extends PureComponent {
     constructor(props) {
@@ -11,13 +13,14 @@ class FameUi extends PureComponent {
         }
     }
     componentDidMount() {
-            this.loadUsers();
+        this.loadUsers();
     }
 
     loadUsers = () => {
-        getAsGuest(`http://localhost:3000/fames?guest=true`)
+        getAsGuest(baseUrl + `/fames?guest=true`)
             .then(
                 (result) => {
+                    //result returned from online api or from cash in offline senarios
                     this.setState({
                         list: result,
                     })

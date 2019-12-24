@@ -1,7 +1,8 @@
 import { postApi, setToLocalStorage } from '../_Share/logic'
+import { baseUrl } from '../_Share/common'
 
 
-const tryLogin = (username, password) => postApi('http://localhost:3000/login', { "username": username, "password": password }).then((res) => {
+const tryLogin = (username, password) => postApi(baseUrl + '/login', { "username": username, "password": password }).then((res) => {
     console.log(res.headers.authorization)
     // login is successfull
     if (res.status === 200) {
