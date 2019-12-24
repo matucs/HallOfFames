@@ -3,6 +3,7 @@ import { logOut, getAsGuest } from './logic'
 import { NavLink } from 'react-router-dom'
 import { baseUrl } from '../_Share/common'
 import './style.css'
+import ErrorBoundry from '../ErrorBoundry/errorBoundry'
 
 
 class FameUi extends PureComponent {
@@ -33,45 +34,48 @@ class FameUi extends PureComponent {
     }
     render() {
         return (
-            <div className="container ">
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <div className="navbar-nav">
-                        <span className="mr-5"><b>{this.props.match.params.username}</b><smal> you are login </smal> </span>
-                        <a onClick={this.logOut.bind(this)} className="btn btn-outline-primary" href="#">Log Out <span class="sr-only">(current)</span></a>
-                    </div>
-                </nav>
-                <div className="row">
-                    <div className="card mx-auto mt-5 p-1 bg-secondary">
-                        <ul className="list-group">
-                            {
-                                this.state.list.map((r) =>
-                                    <Fragment key={r.id}  >
-                                        <NavLink to={{
-                                            pathname: '/detail',
-                                            state: {
-                                                name: r.name,
-                                                dob: r.dob,
-                                                image: r.image
-                                            }
-                                        }}>
-                                            <li className="list-group-item mb-2">{
-                                                <div className="row" >
-                                                    <img className="fameImg img-thumbnail rounded mr-4" src={r.image} />
-                                                    <div>
-                                                        <p>{r.name} </p>
-                                                        <p>{r.dob} </p>
+            <ErrorBoundry>
+                <div className="container ">
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <div className="navbar-nav">
+                            <span className="mr-5"><b>{this.props.match.params.username}</b><smal> you are login </smal> </span>
+                            <a onClick={this.logOut.bind(this)} className="btn btn-outline-primary" href="#">Log Out <span class="sr-only">(current)</span></a>
+                        </div>
+                    </nav>
+                    <div className="row">
+                        <div className="card mx-auto mt-5 p-1 bg-secondary">
+                            <ul className="list-group">
+                                {
+                                    this.state.list.map((r) =>
+                                        <Fragment key={r.id}  >
+                                            <NavLink to={{
+                                                pathname: '/detail',
+                                                state: {
+                                                    name: r.name,
+                                                    dob: r.dob,
+                                                    image: r.image
+                                                }
+                                            }}>
+                                                <li className="list-group-item mb-2">{
+                                                    <div className="row" >
+                                                        <img className="fameImg img-thumbnail rounded mr-4" src={r.image} />
+                                                        <div>
+                                                            <p>{r.name} </p>
+                                                            <p>{r.dob} </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }
-                                            </li>
-                                        </NavLink>
-                                    </Fragment>
-                                )
-                            }
-                        </ul>
+                                                }
+                                                </li>
+                                            </NavLink>
+                                        </Fragment>
+                                    )
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div >
+                </div >
+            </ErrorBoundry>
+
         )
     }
 }
