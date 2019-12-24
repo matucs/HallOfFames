@@ -9,7 +9,8 @@ class LoginUi extends PureComponent {
         this.state = {
             formClassName: 'needs-validation',
             username: '',
-            password: ''
+            password: '',
+            isLogin: false
         }
         this.formRef = React.createRef();
         this.usernameRef = React.createRef();
@@ -20,9 +21,12 @@ class LoginUi extends PureComponent {
         this.setState({
             formClassName: "needs-validation was-validated",
         })
-        tryLogin(this.state.email, this.state.password).then((res) => {
+        tryLogin(this.state.username, this.state.password).then((res) => {
             if(res) {
-               this.props.history.push('/fames')
+                this.setState({
+                    isLogin: true
+                })
+               this.props.history.push(`/fames/${this.state.username}`)
             }
             
         }).catch((e) => {
@@ -54,7 +58,7 @@ class LoginUi extends PureComponent {
                         <hr></hr>
                         <form ref={this.formRef} onSubmit={this.submit.bind(this)} className={this.state.formClassName} noValidate>
                             <div className="form-group">
-                                <label htmlFor="email">Email address</label>
+                                <label htmlFor="username">username</label>
                                 <input ref={el => this.usernameRef = el} onChange={this.usernameChanged.bind(this)} type="text" className="form-control" id="username" placeholder="Enter username" required />
                                 <div className="valid-feedback">good!</div>
                                 <div className="invalid-feedback">invalid-username</div>

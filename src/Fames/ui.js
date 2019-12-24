@@ -1,55 +1,44 @@
 import React, { PureComponent, Fragment } from 'react'
-import { getListWithAuthorization, getAsGuest } from './logic'
+import { logOut, getAsGuest } from './logic'
 import { NavLink } from 'react-router-dom'
+import './style.css'
 
 class FameUi extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            list: [],
-            page: 1,
-            total: 0,
-            perPage: 4,
-            paginationItems: []
+            list: []
         }
     }
     componentDidMount() {
-        this.loadUsers(this.state.page);
+            this.loadUsers();
     }
 
-    loadUsers = (page) => {
-        const tempList = [];
+    loadUsers = () => {
         getAsGuest(`http://localhost:3000/fames?guest=true`)
-        .then(
-            (result) => {console.log(result)
-                result.forEach(element => {
-                    tempList.push(element);
-                });
-                this.setState({
-                    list: tempList,
-                    // page: page,
-                    // total: result.data.total,
-                    // perPage: result.data.per_page,
-                    // paginationItems: Array.from(Array(result.data.total / result.data.per_page).keys())
-                })
-            }
-        )
+            .then(
+                (result) => {
+                    this.setState({
+                        list: result,
+                    })
+                }
+            )
     }
-    pageClick = (page) => {
-        if (page === 'next') {
-            this.setState({
-                page: ++page
-            });
-            this.loadUsers(this.state.page)
-        } else {
-            this.loadUsers(page)
-        }
+    logOut = () => {
+        logOut();
+        this.props.history.push('/')
     }
     render() {
         return (
             <div className="container ">
+                <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                    <div className="navbar-nav">
+                        <span className="mr-5"><b>{this.props.match.params.username}</b><smal> you are login </smal> </span>
+                        <a onClick={this.logOut.bind(this)} className="btn btn-outline-primary" href="#">Log Out <span class="sr-only">(current)</span></a>
+                    </div>
+                </nav>
                 <div className="row">
-                    <div className="card mx-auto mt-5 p-5 bg-secondary">
+                    <div className="card mx-auto mt-5 p-1 bg-secondary">
                         <ul className="list-group">
                             {
                                 this.state.list.map((r) =>
@@ -64,9 +53,9 @@ class FameUi extends PureComponent {
                                         }}>
                                             <li className="list-group-item mb-2">{
                                                 <div className="row" >
-                                                    <img className="img-fluid mr-5" src={r.image} />
+                                                    <img className="fameImg img-thumbnail rounded mr-4" src={r.image} />
                                                     <div>
-                                                        <p>{r.name} {r.dob}</p>
+                                                        <p>{r.name} </p>
                                                         <p>{r.dob} </p>
                                                     </div>
                                                 </div>
@@ -77,15 +66,6 @@ class FameUi extends PureComponent {
                                 )
                             }
                         </ul>
-                        <nav >
-                            <ul className="pagination ml-5">
-                                {
-                                    this.state.paginationItems.map((p, index) =>
-                                        <li key={index} className="page-item"><input type="button" value={index + 1} onClick={() => this.pageClick(index + 1)} className="page-link" href="#"></input></li>
-                                    )
-                                }
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div >

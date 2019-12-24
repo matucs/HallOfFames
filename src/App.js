@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <Route path="/" exact strict component={LoginUi} />
-      <Route path="/fames" exact strict component={FamesUi} />
+      <Route path="/fames/:username" exact strict component={FamesUi} />
       <Route path="/detail" exact strict component={DetailUi} />
     </Router>
   );
