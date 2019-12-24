@@ -26,7 +26,10 @@ class LoginUi extends PureComponent {
                 this.setState({
                     isLogin: true
                 })
-               this.props.history.push(`/fames/${this.state.username}`)
+                //simulate loging with 2 second delay
+                setTimeout(() => {
+                    this.props.history.push(`/fames/${this.state.username}`)
+                }, 2000);
             }
             
         }).catch((e) => {
